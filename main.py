@@ -15,7 +15,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class WebhookPayload(BaseModel):
+    event: str
+    data: dict
+
+@app.post("/webhook")
+async def handle_webhook(payload: WebhookPayload):
+    # ประมวลผล Webhook payload
+    event = payload.event
+    data = payload.data
+
+    # เพิ่มโลจิกที่กำหนดเองที่นี่ตามข้อมูล Webhook ที่ได้รับ
+    # ...
+
+    return {"message": f"ได้รับเหตุการณ์ Webhook: {event}"}
 app.include_router(yolo.router)
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 80))
